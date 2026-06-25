@@ -10,4 +10,5 @@ chmod +x /tmp/kubectl-oadp && \
 mkdir -p ~/bin && cp /tmp/kubectl-oadp ~/bin/kubectl-oadp && \
 export PATH="$HOME/bin:$PATH" && \
 oc oadp version
+oc oadp --help
 ```
