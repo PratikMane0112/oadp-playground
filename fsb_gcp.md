@@ -63,7 +63,7 @@ oc get bsl -n openshift-adp
 
 
 # deploy app
-source /path/to/oadp-apps-deployer/.venv/bin/activate
+source /Users/prmane/OADP/oadp-apps-deployer/.venv/bin/activate
 appm list
 appm deploy ocp-mysql
 
@@ -78,7 +78,7 @@ cat <<'EOF' | oc apply -f -
 apiVersion: velero.io/v1
 kind: Backup
 metadata:
-  name: <BACKUP_NAME>
+  name: test-backup
   namespace: openshift-adp
 spec:
   includedNamespaces:
@@ -88,17 +88,17 @@ spec:
 EOF
 
 # Check phase (wait until "Completed")
-oc get backup <BACKUP_NAME> -n openshift-adp -o jsonpath='{.status.phase}'
+oc get backup test-backup -n openshift-adp -o jsonpath='{.status.phase}'
 
 # Check PodVolumeBackups
 oc get podvolumebackups -n openshift-adp -w
 
 # Check backup progress
-oc get backup <BACKUP_NAME> -n openshift-adp -o jsonpath='{.status.progress}'
+oc get backup test-backup -n openshift-adp -o jsonpath='{.status.progress}'
 
 
 ## Delete the application 
-source /path/to/oadp-apps-deployer/.venv/bin/activate
+source /Users/prmane/OADP/oadp-apps-deployer/.venv/bin/activate
 appm list
 appm remove ocp-mysql
 
@@ -111,17 +111,17 @@ cat <<'EOF' | oc apply -f -
 apiVersion: velero.io/v1
 kind: Restore
 metadata:
-  name: <RESTORE_NAME>
+  name: test-restore
   namespace: openshift-adp
 spec:
-  backupName: <BACKUP_NAME>
+  backupName: test-backup
   includedNamespaces:
     - ocp-mysql
   restorePVs: true
 EOF
 
 # Check phase (wait until "Completed")
-oc get restore <RESTORE_NAME> -n openshift-adp -o jsonpath='{.status.phase}'
+oc get restore test-restore -n openshift-adp -o jsonpath='{.status.phase}'
 
 # Check PodVolumeRestores
 oc get podvolumerestores -n openshift-adp -w
@@ -140,10 +140,10 @@ cat <<'EOF' | oc apply -f -
 apiVersion: velero.io/v1
 kind: DeleteBackupRequest
 metadata:
-  name: delete-<BACKUP_NAME>
+  name: delete-test-backup
   namespace: openshift-adp
 spec:
-  backupName: <BACKUP_NAME>
+  backupName: test-backup
 EOF
 
 # verify
