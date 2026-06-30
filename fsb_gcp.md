@@ -1,4 +1,4 @@
-# FS Backup on GCP OpenShift
+# FS Backup on GCP 
 
 ```bash
 # Confirm oc access
