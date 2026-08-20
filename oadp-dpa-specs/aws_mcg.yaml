@@ -1,0 +1,30 @@
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: ts-dpa
+  namespace: openshift-adp  
+spec:
+  configuration:
+      velero:
+        defaultPlugins:
+          - openshift
+          - aws
+      nodeAgent:                      
+        enable: true
+        uploaderType: kopia
+  backupLocations:
+    - velero:
+        provider: aws         
+        config:               
+          insecureSkipTLSVerify: "true"
+          profile: "noobaa"
+          region: "noobaa"
+          s3ForcePathStyle: "true"
+          s3Url: "s3Url: "https://(oc get route s3 -n openshift-storage -o jsonpath='{.spec.host}')"
+        default: true
+        objectStorage:
+          bucket: 
+          prefix: velero
+
+// check pratik, if its valid, else move bsl to up 
+
